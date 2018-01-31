@@ -3,7 +3,7 @@ using Microsoft.Win32;
 
 namespace IRO.InfinityPhoto
 {
-    internal class BetaChecks
+    internal class RegistryHelper
     {
         public static DateTime? GetEncryptedDate(string tag, string sub)
         {

@@ -1,11 +1,13 @@
-﻿namespace IRO.InfinityPhoto
+﻿using System;
+
+namespace IRO.InfinityPhoto
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             var application = new Application();
-            application.ResetExpirationKeys("a", "b", "c");
+            application.ResetExpirationKeys("0", "a", "b", "c", DateTime.Now);
         }
     }
 }
