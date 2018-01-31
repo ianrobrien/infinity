@@ -8,7 +8,7 @@ namespace IRO.InfinityPhoto
         private readonly string INSTALLER_VALID_START_DATE = "Nov 16 2017";
         private readonly double TRIAL_PERIOD_LENGTH = 10.0;
 
-        public bool TrialExpiredCheck(string productId, string installDateFlag, string firstRunDateFlag, string latestRunFlag)
+        public bool CheckExpired(string productId, string installDateFlag, string firstRunDateFlag, string lastRunFlag)
         {
             var now = DateTime.Now;
 
@@ -22,7 +22,7 @@ namespace IRO.InfinityPhoto
             }
 
             // verify that clock hasn't been turned back
-            var expired = !CheckLastRunDate(now, productId, latestRunFlag) && now < installDate && now < firstRunDate.Value;
+            var expired = !CheckLastRunDate(now, productId, lastRunFlag) && now < installDate && now < firstRunDate.Value;
 
             // verify that the 10 days have not elapsed
             var expirationDate = firstRunDate.Value.AddDays(TRIAL_PERIOD_LENGTH);
@@ -46,7 +46,7 @@ namespace IRO.InfinityPhoto
             RegistryHelper.SetEncryptedDate(productId, installDateFlag, validDate);
             RegistryHelper.SetEncryptedDate(productId, firstRunDateFlag, validDate);
             RegistryHelper.SetEncryptedDate(productId, lastRunDateFlag, validDate);
-            return TrialExpiredCheck(productId, installDateFlag, firstRunDateFlag, lastRunDateFlag);
+            return CheckExpired(productId, installDateFlag, firstRunDateFlag, lastRunDateFlag);
         }
 
         // returns false if the clock has been set behind the last run date
