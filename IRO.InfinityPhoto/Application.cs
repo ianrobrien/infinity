@@ -1,79 +1,60 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.InteropServices;
 
 namespace IRO.InfinityPhoto
 {
-    class Application
+    internal class Application
     {
+        private readonly string PRODUCT_ID = "{921C7219-D941-4F7E-BA74-724A28C8B4EB}";
+        private readonly string INSTALL_DATE_FLAG = "s0";
+        private readonly string FIRST_RUN_DATE_FLAG = "s1";
+        private readonly string LAST_RUN_DATE_FLAG = "s2";
+        private readonly double TRIAL_PERIOD_LENGTH = 10.0;
 
-        private bool IsTrial = true;
-        private String ExpReg = "{921C7219-D941-4F7E-BA74-724A28C8B4EB}";
-        private string PurchaseLink = "https://www.google.com";
-
-        [return: MarshalAs(UnmanagedType.U1)]
         public bool TrialExpiredCheck()
         {
-            if (!this.IsTrial)
-                return false;
-            bool flag1 = false;
-            DateTime now = DateTime.Now;
-            DateTime? nullable1 = BetaChecks.GetAttr(this.ExpReg, "s0");
-            if (!nullable1.HasValue)
+            var now = DateTime.Now;
+
+            var installDate = BetaChecks.GetAttr(this.PRODUCT_ID, INSTALL_DATE_FLAG) ?? now;
+
+            var firstRunDate = BetaChecks.GetAttr(this.PRODUCT_ID, FIRST_RUN_DATE_FLAG);
+            if (!firstRunDate.HasValue)
             {
-                nullable1 = (DateTime?)now;
-                flag1 = true;
+                firstRunDate = now;
+                BetaChecks.SetAttr(this.PRODUCT_ID, FIRST_RUN_DATE_FLAG, now);
             }
-            DateTime? nullable2 = BetaChecks.GetAttr(this.ExpReg, "s1");
-            if (!nullable2.HasValue)
+
+            // verify that clock hasn't been turned back
+            var expired = !CheckAndUpdateLastRunDate(now) && now < installDate && now < firstRunDate.Value;
+
+            // verify that the 10 days have not elapsed
+            var expirationDate = firstRunDate.Value.AddDays(TRIAL_PERIOD_LENGTH);
+            expired = now > expirationDate || expired;
+
+            // verify that the trial period is within the valid date
+            var buildValidStartDate = Convert.ToDateTime("Nov 16 2017", CultureInfo.InvariantCulture);
+            var buildValidEndDate = buildValidStartDate.AddYears(1);
+            expired = now > buildValidEndDate || now < buildValidStartDate || expired;
+                        
+            if (expired)
             {
-                //int num = (int)MessageBox.Show(string.Format(this.GetString("NewTrial"), (object)this.Name, (object)10), "Affinity", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                nullable2 = (DateTime?)now;
-                flag1 = !BetaChecks.SetAttr(this.ExpReg, "s1", now) || flag1;
+                throw new Exception($"Product expired on {expirationDate}");
             }
-            if (this.CheckAndUpdateLastRunDate(now))
-            {
-                DateTime dateTime1 = nullable1.Value;
-                if (!(now < dateTime1))
-                {
-                    DateTime dateTime2 = nullable2.Value;
-                    if (!(now < dateTime2))
-                        goto label_10;
-                }
-            }
-            flag1 = true;
-        label_10:
-            DateTime dateTime3 = nullable2.Value.AddDays(10.0);
-            bool flag2 = now > dateTime3 || flag1;
-            DateTime dateTime4 = System.Convert.ToDateTime("Nov 16 2017", (IFormatProvider)CultureInfo.InvariantCulture);
-            DateTime dateTime5 = dateTime4.AddYears(1);
-            if (now > dateTime5 || now < dateTime4)
-                flag2 = true;
-            else if (!flag2)
-                goto label_16;
-            try
-            {
-                Process.Start(this.PurchaseLink);
-            }
-            catch (System.Exception ex)
-            {
-            }
-        label_16:
-            return flag2;
+
+            return false;
         }
 
-        [return: MarshalAs(UnmanagedType.U1)]
         private bool CheckAndUpdateLastRunDate(DateTime now)
         {
-            DateTime? attr = BetaChecks.GetAttr(this.ExpReg, "s2");
-            if (attr.HasValue)
+            var lastRunDate = BetaChecks.GetAttr(this.PRODUCT_ID, LAST_RUN_DATE_FLAG);
+            if (lastRunDate.HasValue)
             {
-                DateTime dateTime = attr.Value;
-                if (now < dateTime)
+                if (now < lastRunDate.Value)
+                {
                     return false;
+                }
             }
-            return BetaChecks.SetAttr(this.ExpReg, "s2", now);
+            return BetaChecks.SetAttr(this.PRODUCT_ID, LAST_RUN_DATE_FLAG, now);
         }
 
     }
