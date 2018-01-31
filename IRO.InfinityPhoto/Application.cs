@@ -5,37 +5,34 @@ namespace IRO.InfinityPhoto
 {
     internal class Application
     {
-        private readonly string PRODUCT_ID = "{921C7219-D941-4F7E-BA74-724A28C8B4EB}";
-        private readonly string INSTALL_DATE_FLAG = "s0";
-        private readonly string FIRST_RUN_DATE_FLAG = "s1";
-        private readonly string LAST_RUN_DATE_FLAG = "s2";
+        private readonly string INSTALLER_VALID_START_DATE = "Nov 16 2017";
         private readonly double TRIAL_PERIOD_LENGTH = 10.0;
 
-        public bool TrialExpiredCheck()
+        public bool TrialExpiredCheck(string productId, string installDateFlag, string firstRunDateFlag, string latestRunFlag)
         {
             var now = DateTime.Now;
 
-            var installDate = BetaChecks.GetAttr(this.PRODUCT_ID, INSTALL_DATE_FLAG) ?? now;
+            var installDate = RegistryHelper.GetEncryptedDate(productId, installDateFlag) ?? now;
 
-            var firstRunDate = BetaChecks.GetAttr(this.PRODUCT_ID, FIRST_RUN_DATE_FLAG);
+            var firstRunDate = RegistryHelper.GetEncryptedDate(productId, firstRunDateFlag);
             if (!firstRunDate.HasValue)
             {
                 firstRunDate = now;
-                BetaChecks.SetAttr(this.PRODUCT_ID, FIRST_RUN_DATE_FLAG, now);
+                RegistryHelper.SetEncryptedDate(productId, firstRunDateFlag, now);
             }
 
             // verify that clock hasn't been turned back
-            var expired = !CheckAndUpdateLastRunDate(now) && now < installDate && now < firstRunDate.Value;
+            var expired = !CheckLastRunDate(now, productId, latestRunFlag) && now < installDate && now < firstRunDate.Value;
 
             // verify that the 10 days have not elapsed
             var expirationDate = firstRunDate.Value.AddDays(TRIAL_PERIOD_LENGTH);
             expired = now > expirationDate || expired;
 
             // verify that the trial period is within the valid date
-            var buildValidStartDate = Convert.ToDateTime("Nov 16 2017", CultureInfo.InvariantCulture);
+            var buildValidStartDate = Convert.ToDateTime(INSTALLER_VALID_START_DATE, CultureInfo.InvariantCulture);
             var buildValidEndDate = buildValidStartDate.AddYears(1);
             expired = now > buildValidEndDate || now < buildValidStartDate || expired;
-                        
+
             if (expired)
             {
                 throw new Exception($"Product expired on {expirationDate}");
@@ -44,18 +41,19 @@ namespace IRO.InfinityPhoto
             return false;
         }
 
-        private bool CheckAndUpdateLastRunDate(DateTime now)
+        public bool ResetExpirationKeys(string productId, string installDateFlag, string firstRunDateFlag, string lastRunDateFlag, DateTime validDate)
         {
-            var lastRunDate = BetaChecks.GetAttr(this.PRODUCT_ID, LAST_RUN_DATE_FLAG);
-            if (lastRunDate.HasValue)
-            {
-                if (now < lastRunDate.Value)
-                {
-                    return false;
-                }
-            }
-            return BetaChecks.SetAttr(this.PRODUCT_ID, LAST_RUN_DATE_FLAG, now);
+            RegistryHelper.SetEncryptedDate(productId, installDateFlag, validDate);
+            RegistryHelper.SetEncryptedDate(productId, firstRunDateFlag, validDate);
+            RegistryHelper.SetEncryptedDate(productId, lastRunDateFlag, validDate);
+            return TrialExpiredCheck(productId, installDateFlag, firstRunDateFlag, lastRunDateFlag);
         }
 
+        // returns false if the clock has been set behind the last run date
+        private bool CheckLastRunDate(DateTime now, string productId, string lastRunDateFlag)
+        {
+            var lastRunDate = RegistryHelper.GetEncryptedDate(productId, lastRunDateFlag);
+            return !(lastRunDate.HasValue && now < lastRunDate.Value);
+        }
     }
 }

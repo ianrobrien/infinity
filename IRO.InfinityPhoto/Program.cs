@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             var application = new Application();
-            application.TrialExpiredCheck();
+            application.ResetExpirationKeys("a", "b", "c");
         }
     }
 }

@@ -5,7 +5,7 @@ namespace IRO.InfinityPhoto
 {
     internal class BetaChecks
     {
-        public static DateTime? GetAttr(string tag, string sub)
+        public static DateTime? GetEncryptedDate(string tag, string sub)
         {
             var registryKey = Registry.GetValue($"HKEY_CLASSES_ROOT\\CLSID\\{tag}", sub, null);
             if (registryKey == null)
@@ -33,7 +33,7 @@ namespace IRO.InfinityPhoto
             return new DateTime?();
         }
 
-        public static bool SetAttr(string tag, string subKey, DateTime value)
+        public static bool SetEncryptedDate(string tag, string subKey, DateTime value)
         {
             var registryKeyName = $"CLSID\\{tag as object}";
             var numArray = new byte[8];
