@@ -12,8 +12,8 @@ namespace IRO.InfinityPhoto
         static void Main(string[] args)
         {
             var application = new Application();
-            application.ResetExpirationKeys(PRODUCT_ID, INSTALL_DATE_FLAG, FIRST_RUN_DATE_FLAG, LAST_RUN_DATE_FLAG, DateTime.Now);
-            if (application.CheckExpired(PRODUCT_ID, INSTALL_DATE_FLAG, FIRST_RUN_DATE_FLAG, LAST_RUN_DATE_FLAG))
+            application.ResetExpirationKeys(PRODUCT_ID, INSTALL_DATE_FLAG, FIRST_RUN_DATE_FLAG, LAST_RUN_DATE_FLAG);
+            if (application.IsExpired(PRODUCT_ID, INSTALL_DATE_FLAG, FIRST_RUN_DATE_FLAG, LAST_RUN_DATE_FLAG))
             {
                 throw new Exception("ResetExpirationKeys did not work.");
             }

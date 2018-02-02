@@ -8,7 +8,7 @@ namespace IRO.InfinityPhoto
         private readonly string INSTALLER_VALID_START_DATE = "Nov 16 2017";
         private readonly double TRIAL_PERIOD_LENGTH = 10.0;
 
-        public bool CheckExpired(string productId, string installDateFlag, string firstRunDateFlag, string lastRunFlag)
+        public bool IsExpired(string productId, string installDateFlag, string firstRunDateFlag, string lastRunFlag)
         {
             var now = DateTime.Now;
 
@@ -41,12 +41,12 @@ namespace IRO.InfinityPhoto
             return false;
         }
 
-        public bool ResetExpirationKeys(string productId, string installDateFlag, string firstRunDateFlag, string lastRunDateFlag, DateTime validDate)
+        public void ResetExpirationKeys(string productId, string installDateFlag, string firstRunDateFlag, string lastRunDateFlag)
         {
+            DateTime validDate = DateTime.Now;
             RegistryHelper.SetEncryptedDate(productId, installDateFlag, validDate);
             RegistryHelper.SetEncryptedDate(productId, firstRunDateFlag, validDate);
             RegistryHelper.SetEncryptedDate(productId, lastRunDateFlag, validDate);
-            return CheckExpired(productId, installDateFlag, firstRunDateFlag, lastRunDateFlag);
         }
 
         // returns false if the clock has been set behind the last run date

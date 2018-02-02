@@ -55,10 +55,10 @@ namespace IRO.InfinityPhoto
             numArray[6] = (byte)(numArray[3] ^ numArray[2]);
             numArray[7] = (byte)(numArray[3] ^ numArray[0]);
 
-            return QuietSet(registryKeyName, subKey, numArray);
+            return SetValue(registryKeyName, subKey, numArray);
         }
 
-        private static bool QuietSet(string tag, string subKey, byte[] value)
+        private static bool SetValue(string tag, string subKey, byte[] value)
         {           
             var registryKey = Registry.ClassesRoot.OpenSubKey(tag, true);
             if (registryKey != null)
