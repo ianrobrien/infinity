@@ -1,0 +1,7 @@
+language: csharp
+solution: IRO.Infinity.sln
+install:
+  - nuget restore IRO.Infinity.sln
+script:
+  - xbuild /p:Configuration=Release IRO.Infinity.sln
+  - mono ./packages/NUnit.Runners.*/tools/nunit-console.exe ./IRO.Infinity.Test/bin/Release/IRO.Infinity.Test.dll
