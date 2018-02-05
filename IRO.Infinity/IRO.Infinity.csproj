@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D9552063-55D7-4A55-B468-BBB26262CE08}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>IRO.InfinityPhoto</RootNamespace>
-    <AssemblyName>IRO.InfinityPhoto</AssemblyName>
+    <RootNamespace>IRO.Infinity</RootNamespace>
+    <AssemblyName>IRO.Infinity</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>IRO.InfinityPhoto.Program</StartupObject>
+    <StartupObject>IRO.Infinity.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -67,7 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application.cs" />
+    <Compile Include="Infinity.cs" />
     <Compile Include="RegistryHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace IRO.InfinityPhoto
+namespace IRO.Infinity
 {
     internal class RegistryHelper
     {

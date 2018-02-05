@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IRO.InfinityPhoto
+namespace IRO.Infinity
 {
     internal class Program
     {
@@ -11,7 +11,7 @@ namespace IRO.InfinityPhoto
 
         static void Main(string[] args)
         {
-            var application = new Application();
+            var application = new Infinity();
             application.ResetExpirationKeys(PRODUCT_ID, INSTALL_DATE_FLAG, FIRST_RUN_DATE_FLAG, LAST_RUN_DATE_FLAG);
             if (application.IsExpired(PRODUCT_ID, INSTALL_DATE_FLAG, FIRST_RUN_DATE_FLAG, LAST_RUN_DATE_FLAG))
             {

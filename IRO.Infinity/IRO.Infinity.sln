@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRO.InfinityPhoto", "IRO.InfinityPhoto.csproj", "{D9552063-55D7-4A55-B468-BBB26262CE08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRO.Infinity", "IRO.Infinity.csproj", "{D9552063-55D7-4A55-B468-BBB26262CE08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRO.InfinityPhoto.Test", "..\IRO.InfinityPhoto.Test\IRO.InfinityPhoto.Test.csproj", "{1388B81D-9C9A-4736-AF77-3A01E8224BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRO.Infinity.Test", "..\IRO.Infinity.Test\IRO.Infinity.Test.csproj", "{1388B81D-9C9A-4736-AF77-3A01E8224BB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

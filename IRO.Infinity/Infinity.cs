@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 
-namespace IRO.InfinityPhoto
+namespace IRO.Infinity
 {
-    internal class Application
+    internal class Infinity
     {
         private readonly string INSTALLER_VALID_START_DATE = "Nov 16 2017";
         private readonly double TRIAL_PERIOD_LENGTH = 10.0;

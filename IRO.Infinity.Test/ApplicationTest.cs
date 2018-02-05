@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IRO.InfinityPhoto.Test
+﻿namespace IRO.Infinity.Test
 {
     public class ApplicationTest
     {

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>IRO.Infinity.Test</AssemblyName>
+    <RootNamespace>IRO.Infinity.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
